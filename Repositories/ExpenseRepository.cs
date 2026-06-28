@@ -38,4 +38,10 @@ public class ExpenseRepository : IExpenseRepository
         _context.Ausgaben.Add(ausgabe);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task UpdateAsync(Ausgabe ausgabe)
+    {
+        _context.Ausgaben.Update(ausgabe);
+        await _context.SaveChangesAsync();
+    }
 }
