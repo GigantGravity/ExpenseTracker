@@ -4,16 +4,23 @@
     ViewData["Title"] = "Ausgaben";
 }
 
-<h1>Ausgaben</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Ausgaben</h1>
+
+    <a asp-action="Create" class="btn btn-primary">
+        Neue Ausgabe
+    </a>
+</div>
 
 <table class="table table-striped">
     <thead>
     <tr>
         <th>Datum</th>
-        <th>Bezeichnung</th>
+        <th>Ausgabe</th>
         <th>Kategorie</th>
         <th>Zahlungsart</th>
         <th class="text-end">Betrag</th>
+        <th class="text-center">Aktionen</th>
     </tr>
     </thead>
     <tbody>
@@ -21,10 +28,29 @@
     {
         <tr>
             <td>@ausgabe.Datum.ToString("dd.MM.yyyy")</td>
-            <td>@ausgabe.Bezeichnung</td>
+            <td>
+                <strong>@ausgabe.Bezeichnung</strong>
+
+                @if (!string.IsNullOrWhiteSpace(ausgabe.Beschreibung))
+                {
+                    <br />
+                    <small class="text-muted">
+                        @ausgabe.Beschreibung
+                    </small>
+                }
+            </td>
             <td>@ausgabe.Kategorie?.Name</td>
             <td>@ausgabe.Zahlungsart?.Name</td>
             <td class="text-end">@ausgabe.Betrag.ToString("C")</td>
+            <td class="text-center">
+                <a href="#" class="btn btn-sm btn-outline-primary">
+                    Bearbeiten
+                </a>
+
+                <a href="#" class="btn btn-sm btn-outline-danger">
+                    Löschen
+                </a>
+            </td>
         </tr>
     }
     </tbody>
