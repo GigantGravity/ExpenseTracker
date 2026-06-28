@@ -7,6 +7,10 @@ public interface IExpenseRepository
     Task<List<Ausgabe>> GetAllAsync();
 
     Task<Ausgabe?> GetByIdAsync(int id);
+    
+    Task UpdateAsync(Ausgabe ausgabe);
 
     Task AddAsync(Ausgabe ausgabe);
+    
+    Task DeleteAsync(int id);
 }

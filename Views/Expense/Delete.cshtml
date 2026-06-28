@@ -1,0 +1,35 @@
+﻿@model ExpenseTracker.Models.Ausgabe
+
+@{
+    ViewData["Title"] = "Ausgabe löschen";
+}
+
+<h1>Ausgabe löschen</h1>
+
+<div class="alert alert-warning">
+    Möchten Sie diese Ausgabe wirklich löschen?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Bezeichnung</dt>
+    <dd class="col-sm-9">@Model.Bezeichnung</dd>
+
+    <dt class="col-sm-3">Betrag</dt>
+    <dd class="col-sm-9">@Model.Betrag.ToString("C")</dd>
+
+    <dt class="col-sm-3">Datum</dt>
+    <dd class="col-sm-9">@Model.Datum.ToString("dd.MM.yyyy")</dd>
+
+    <dt class="col-sm-3">Kategorie</dt>
+    <dd class="col-sm-9">@Model.Kategorie?.Name</dd>
+
+    <dt class="col-sm-3">Zahlungsart</dt>
+    <dd class="col-sm-9">@Model.Zahlungsart?.Name</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="AusgabeID" />
+
+    <button type="submit" class="btn btn-danger">Löschen</button>
+    <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+</form>
