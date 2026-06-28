@@ -1,0 +1,27 @@
+﻿@model List<ExpenseTracker.Models.Kategorie>
+
+@{
+    ViewData["Title"] = "Kategorien";
+}
+
+<h1>Kategorien</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Icon</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var kategorie in Model)
+    {
+        <tr>
+            <td>@kategorie.KategorieID</td>
+            <td>@kategorie.Name</td>
+            <td>@kategorie.Icon</td>
+        </tr>
+    }
+    </tbody>
+</table>
