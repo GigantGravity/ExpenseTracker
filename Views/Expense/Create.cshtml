@@ -7,36 +7,57 @@
 <h1>Neue Ausgabe</h1>
 
 <form asp-action="Create" method="post">
+    
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
     <div class="mb-3">
         <label asp-for="Ausgabe.Bezeichnung" class="form-label"></label>
-        <input asp-for="Ausgabe.Bezeichnung" class="form-control" />
+        <input asp-for="Ausgabe.Bezeichnung" class="form-control"/>
+        <span asp-validation-for="Ausgabe.Bezeichnung" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Ausgabe.Betrag" class="form-label"></label>
-        <input asp-for="Ausgabe.Betrag" class="form-control" type="number" step="0.01" />
+        <input asp-for="Ausgabe.Betrag" class="form-control" type="number" step="0.01"/>
+        <span asp-validation-for="Ausgabe.Betrag" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Ausgabe.Datum" class="form-label"></label>
-        <input asp-for="Ausgabe.Datum" class="form-control" type="date" />
+        <input asp-for="Ausgabe.Datum" class="form-control" type="date"/>
+        <span asp-validation-for="Ausgabe.Datum" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Ausgabe.Beschreibung" class="form-label"></label>
         <textarea asp-for="Ausgabe.Beschreibung" class="form-control"></textarea>
+        <span asp-validation-for="Ausgabe.Beschreibung" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Ausgabe.KategorieID" class="form-label">Kategorie</label>
-        <select asp-for="Ausgabe.KategorieID" asp-items="Model.Kategorien" class="form-select"></select>
+        <select asp-for="Ausgabe.KategorieID"
+                asp-items="Model.Kategorien"
+                class="form-select"></select>
+
+        <span asp-validation-for="Ausgabe.KategorieID" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Ausgabe.ZahlungsartID" class="form-label">Zahlungsart</label>
-        <select asp-for="Ausgabe.ZahlungsartID" asp-items="Model.Zahlungsarten" class="form-select"></select>
+        <select asp-for="Ausgabe.ZahlungsartID"
+                asp-items="Model.Zahlungsarten"
+                class="form-select"></select>
+
+        <span asp-validation-for="Ausgabe.ZahlungsartID" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Speichern</button>
     <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
