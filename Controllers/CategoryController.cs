@@ -1,23 +1,20 @@
-﻿using ExpenseTracker.Data;
+﻿using ExpenseTracker.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Controllers;
 
 public class CategoryController : Controller
 {
-    private readonly ExpenseTrackerContext _context;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public CategoryController(ExpenseTrackerContext context)
+    public CategoryController(ICategoryRepository categoryRepository)
     {
-        _context = context;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<IActionResult> Index()
     {
-        var kategorien = await _context.Kategorien
-            .OrderBy(k => k.Name)
-            .ToListAsync();
+        var kategorien = await _categoryRepository.GetAllAsync();
 
         return View(kategorien);
     }
