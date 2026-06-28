@@ -2,6 +2,7 @@
 using ExpenseTracker.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Controllers;
 
@@ -88,21 +89,54 @@ public class ExpenseController : Controller
 
     public async Task<IActionResult> Create()
     {
-        await LoadDropdownsAsync();
-        return View();
+        var model = new ExpenseCreateViewModel
+        {
+            Kategorien = (await _categoryRepository.GetAllAsync())
+                .Select(k => new SelectListItem
+                {
+                    Value = k.KategorieID.ToString(),
+                    Text = k.Name
+                })
+                .ToList(),
+
+            Zahlungsarten = (await _paymentMethodRepository.GetAllAsync())
+                .Select(z => new SelectListItem
+                {
+                    Value = z.ZahlungsartID.ToString(),
+                    Text = z.Name
+                })
+                .ToList()
+        };
+
+        return View(model);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Ausgabe ausgabe)
+    public async Task<IActionResult> Create(ExpenseCreateViewModel model)
     {
         if (!ModelState.IsValid)
         {
-            await LoadDropdownsAsync();
-            return View(ausgabe);
+            model.Kategorien = (await _categoryRepository.GetAllAsync())
+                .Select(k => new SelectListItem
+                {
+                    Value = k.KategorieID.ToString(),
+                    Text = k.Name
+                })
+                .ToList();
+
+            model.Zahlungsarten = (await _paymentMethodRepository.GetAllAsync())
+                .Select(z => new SelectListItem
+                {
+                    Value = z.ZahlungsartID.ToString(),
+                    Text = z.Name
+                })
+                .ToList();
+
+            return View(model);
         }
 
-        await _expenseRepository.AddAsync(ausgabe);
+        await _expenseRepository.AddAsync(model.Ausgabe);
 
         return RedirectToAction(nameof(Index));
     }
