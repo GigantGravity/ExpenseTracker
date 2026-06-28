@@ -84,6 +84,8 @@ public class ExpenseController : Controller
 
         await _expenseRepository.UpdateAsync(model.Ausgabe);
 
+        TempData["SuccessMessage"] = "Die Ausgabe wurde erfolgreich aktualisiert.";
+        
         return RedirectToAction(nameof(Index));
     }
 
@@ -138,6 +140,8 @@ public class ExpenseController : Controller
 
         await _expenseRepository.AddAsync(model.Ausgabe);
 
+        TempData["SuccessMessage"] = "Die Ausgabe wurde erfolgreich erstellt.";
+        
         return RedirectToAction(nameof(Index));
     }
 
@@ -168,6 +172,8 @@ public class ExpenseController : Controller
     {
         await _expenseRepository.DeleteAsync(id);
 
+        TempData["SuccessMessage"] = "Die Ausgabe wurde erfolgreich gelöscht.";
+        
         return RedirectToAction(nameof(Index));
     }
 }

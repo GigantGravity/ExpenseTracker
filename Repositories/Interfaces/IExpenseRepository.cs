@@ -13,4 +13,18 @@ public interface IExpenseRepository
     Task AddAsync(Ausgabe ausgabe);
     
     Task DeleteAsync(int id);
+    
+    Task<decimal> GetTotalAmountAsync();
+
+    Task<decimal> GetTotalAmountForCurrentMonthAsync();
+
+    Task<int> GetCountAsync();
+
+    Task<decimal> GetAverageAmountAsync();
+
+    Task<List<Ausgabe>> GetLatestAsync(int count);
+    
+    Task<Ausgabe?> GetLargestExpenseAsync();
+
+    Task<(Kategorie? Kategorie, int Anzahl)> GetMostUsedCategoryAsync();
 }

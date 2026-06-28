@@ -1,45 +1,53 @@
 using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Models;
-using ExpenseTracker.Data;
-using Microsoft.EntityFrameworkCore;
+using ExpenseTracker.Repositories.Interfaces;
+using ExpenseTracker.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly ExpenseTrackerContext _context;
+    private readonly IExpenseRepository _expenseRepository;
 
-    public HomeController(ILogger<HomeController> logger, ExpenseTrackerContext context)
+    public HomeController(IExpenseRepository expenseRepository)
     {
-        _logger = logger;
-        _context = context;
+        _expenseRepository = expenseRepository;
     }
 
     public async Task<IActionResult> Index()
     {
-        try
-        {
-            var kategorien = await _context.Kategorien.ToListAsync();
+        var haeufigsteKategorie = await _expenseRepository.GetMostUsedCategoryAsync();
 
-            return Content($"Verbindung erfolgreich! Kategorien gefunden: {kategorien.Count}");
-        }
-        catch (Exception ex)
+        var model = new DashboardViewModel
         {
-            return Content(ex.ToString());
-        }
+            Gesamtausgaben = await _expenseRepository.GetTotalAmountAsync(),
+            AusgabenDiesenMonat = await _expenseRepository.GetTotalAmountForCurrentMonthAsync(),
+            AnzahlAusgaben = await _expenseRepository.GetCountAsync(),
+            DurchschnittlicheAusgabe = await _expenseRepository.GetAverageAmountAsync(),
+
+            GroessteAusgabe = await _expenseRepository.GetLargestExpenseAsync(),
+
+            HaeufigsteKategorie = haeufigsteKategorie.Kategorie,
+            AnzahlAusgabenHaeufigsteKategorie = haeufigsteKategorie.Anzahl,
+
+            NeuesteAusgaben = await _expenseRepository.GetLatestAsync(5)
+        };
+
+        return View(model);
     }
 
     public IActionResult Privacy()
     {
         return View();
     }
-    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(new ErrorViewModel
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+        });
     }
 }

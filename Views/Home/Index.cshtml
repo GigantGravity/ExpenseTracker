@@ -1,8 +1,117 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ExpenseTracker.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="mb-4">Dashboard</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Gesamtausgaben</h6>
+                <h3>@Model.Gesamtausgaben.ToString("C")</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Diesen Monat</h6>
+                <h3>@Model.AusgabenDiesenMonat.ToString("C")</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Anzahl Ausgaben</h6>
+                <h3>@Model.AnzahlAusgaben</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Durchschnitt</h6>
+                <h3>@Model.DurchschnittlicheAusgabe.ToString("C")</h3>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Größte Ausgabe</h6>
+
+                @if (Model.GroessteAusgabe != null)
+                {
+                    <h4>@Model.GroessteAusgabe.Bezeichnung</h4>
+                    <p class="mb-0">@Model.GroessteAusgabe.Betrag.ToString("C")</p>
+                }
+                else
+                {
+                    <p>Keine Daten vorhanden.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h6 class="text-muted">Häufigste Kategorie</h6>
+
+                @if (Model.HaeufigsteKategorie != null)
+                {
+                    <h4>@Model.HaeufigsteKategorie.Name</h4>
+                    <p class="mb-0">@Model.AnzahlAusgabenHaeufigsteKategorie Ausgaben</p>
+                }
+                else
+                {
+                    <p>Keine Daten vorhanden.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>Neueste Ausgaben</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Datum</th>
+        <th>Ausgabe</th>
+        <th>Kategorie</th>
+        <th>Zahlungsart</th>
+        <th class="text-end">Betrag</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var ausgabe in Model.NeuesteAusgaben)
+    {
+        <tr>
+            <td>@ausgabe.Datum.ToString("dd.MM.yyyy")</td>
+            <td>
+                <strong>@ausgabe.Bezeichnung</strong>
+
+                @if (!string.IsNullOrWhiteSpace(ausgabe.Beschreibung))
+                {
+                    <br />
+                    <small class="text-muted">@ausgabe.Beschreibung</small>
+                }
+            </td>
+            <td>@ausgabe.Kategorie?.Name</td>
+            <td>@ausgabe.Zahlungsart?.Name</td>
+            <td class="text-end">@ausgabe.Betrag.ToString("C")</td>
+        </tr>
+    }
+    </tbody>
+</table>
