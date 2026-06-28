@@ -22,4 +22,20 @@ public class ExpenseRepository : IExpenseRepository
             .OrderByDescending(a => a.Datum)
             .ToListAsync();
     }
+    
+    public async Task<Ausgabe?> GetByIdAsync(int id)
+    {
+        return await _context.Ausgaben
+            .Include(a => a.Kategorie)
+            .Include(a => a.Zahlungsart)
+            .FirstOrDefaultAsync(a => a.AusgabeID == id);
+    }
+
+    public async Task AddAsync(Ausgabe ausgabe)
+    {
+        ausgabe.ErstelltAm = DateTime.Now;
+
+        _context.Ausgaben.Add(ausgabe);
+        await _context.SaveChangesAsync();
+    }
 }

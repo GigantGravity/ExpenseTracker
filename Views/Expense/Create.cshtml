@@ -1,0 +1,42 @@
+﻿@model ExpenseTracker.Models.Ausgabe
+
+@{
+    ViewData["Title"] = "Neue Ausgabe";
+}
+
+<h1>Neue Ausgabe</h1>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Bezeichnung" class="form-label"></label>
+        <input asp-for="Bezeichnung" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Betrag" class="form-label"></label>
+        <input asp-for="Betrag" class="form-control" type="number" step="0.01" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Datum" class="form-label"></label>
+        <input asp-for="Datum" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Beschreibung" class="form-label"></label>
+        <textarea asp-for="Beschreibung" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="KategorieID" class="form-label">Kategorie</label>
+        <select asp-for="KategorieID" asp-items="ViewBag.Kategorien" class="form-select"></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ZahlungsartID" class="form-label">Zahlungsart</label>
+        <select asp-for="ZahlungsartID" asp-items="ViewBag.Zahlungsarten" class="form-select"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Speichern</button>
+    <a asp-action="Index" class="btn btn-secondary">Abbrechen</a>
+</form>

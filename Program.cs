@@ -12,6 +12,7 @@ builder.Services.AddDbContext<ExpenseTrackerContext>(options =>
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
