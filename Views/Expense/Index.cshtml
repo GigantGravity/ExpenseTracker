@@ -1,0 +1,31 @@
+﻿@model List<ExpenseTracker.Models.Ausgabe>
+
+@{
+    ViewData["Title"] = "Ausgaben";
+}
+
+<h1>Ausgaben</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Datum</th>
+        <th>Bezeichnung</th>
+        <th>Kategorie</th>
+        <th>Zahlungsart</th>
+        <th class="text-end">Betrag</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var ausgabe in Model)
+    {
+        <tr>
+            <td>@ausgabe.Datum.ToString("dd.MM.yyyy")</td>
+            <td>@ausgabe.Bezeichnung</td>
+            <td>@ausgabe.Kategorie?.Name</td>
+            <td>@ausgabe.Zahlungsart?.Name</td>
+            <td class="text-end">@ausgabe.Betrag.ToString("C")</td>
+        </tr>
+    }
+    </tbody>
+</table>
