@@ -2,6 +2,7 @@
 using ExpenseTracker.Models;
 using ExpenseTracker.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace ExpenseTracker.Repositories;
 
@@ -33,10 +34,19 @@ public class ExpenseRepository : IExpenseRepository
 
     public async Task AddAsync(Ausgabe ausgabe)
     {
-        ausgabe.ErstelltAm = DateTime.Now;
+        var parameters = new[]
+        {
+            new SqlParameter("@Bezeichnung", ausgabe.Bezeichnung),
+            new SqlParameter("@Betrag", ausgabe.Betrag),
+            new SqlParameter("@Datum", ausgabe.Datum),
+            new SqlParameter("@Beschreibung", (object?)ausgabe.Beschreibung ?? DBNull.Value),
+            new SqlParameter("@KategorieID", ausgabe.KategorieID),
+            new SqlParameter("@ZahlungsartID", ausgabe.ZahlungsartID)
+        };
 
-        _context.Ausgaben.Add(ausgabe);
-        await _context.SaveChangesAsync();
+        await _context.Database.ExecuteSqlRawAsync(
+            "EXEC dbo.sp_abbiit00_AusgabeErstellen @Bezeichnung, @Betrag, @Datum, @Beschreibung, @KategorieID, @ZahlungsartID",
+            parameters);
     }
     
     public async Task UpdateAsync(Ausgabe ausgabe)
