@@ -149,4 +149,25 @@ public class ExpenseController : Controller
         ViewBag.Kategorien = new SelectList(kategorien, "KategorieID", "Name");
         ViewBag.Zahlungsarten = new SelectList(zahlungsarten, "ZahlungsartID", "Name");
     }
+    
+    public async Task<IActionResult> Delete(int id)
+    {
+        var ausgabe = await _expenseRepository.GetByIdAsync(id);
+
+        if (ausgabe == null)
+        {
+            return NotFound();
+        }
+
+        return View(ausgabe);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        await _expenseRepository.DeleteAsync(id);
+
+        return RedirectToAction(nameof(Index));
+    }
 }

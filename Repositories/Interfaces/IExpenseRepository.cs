@@ -11,4 +11,6 @@ public interface IExpenseRepository
     Task UpdateAsync(Ausgabe ausgabe);
 
     Task AddAsync(Ausgabe ausgabe);
+    
+    Task DeleteAsync(int id);
 }
