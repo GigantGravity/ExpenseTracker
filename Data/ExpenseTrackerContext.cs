@@ -30,9 +30,15 @@ public class ExpenseTrackerContext : DbContext
             .ToTable("abbiit00_Zahlungsart")
             .HasKey(z => z.ZahlungsartID);
 
-        modelBuilder.Entity<Ausgabe>()
-            .ToTable("abbiit00_Ausgabe")
-            .HasKey(a => a.AusgabeID);
+        modelBuilder.Entity<Ausgabe>(entity =>
+        {
+            entity.ToTable("abbiit00_Ausgabe", tb =>
+            {
+                tb.HasTrigger("trg_abbiit00_Ausgabe_Insert");
+            });
+
+            entity.HasKey(a => a.AusgabeID);
+        });
 
         modelBuilder.Entity<AusgabeLog>()
             .ToTable("abbiit00_AusgabeLog")
